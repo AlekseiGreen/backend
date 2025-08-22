@@ -70,7 +70,6 @@ server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-
 // {import { createServer, IncomingMessage, ServerResponse } from 'http';
 // import { IComment } from './types';
 // import { readFile, writeFile } from 'fs/promises';
