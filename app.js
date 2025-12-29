@@ -1,22 +1,27 @@
-//***************//
-//    EXPRESS    //
-//***************//
-
-// подключение express
+// backend/app.js
 const express = require('express');
 
 
-// создаем объект приложения
+const path = require('path');
+
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-// определяем обработчик для маршрута "/"
-app.get('/', (req, res)=>{
-    // отправляем ответ
-    res.send('RUN SERVER');
-})
+// ---------- API ----------
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'backend' });
+});
 
-// начинаем прослушивать подключения на 3000 порту
-app.listen(port, ()=>{
-    console.log(`Port=${port}`);
-})
+// ---------- Отдача статики (React) ----------
+const DIST_DIR = path.join(__dirname, '..', 'frontend', 'dist');
+app.use(express.static(DIST_DIR));
+
+// SPA: все остальные пути → index.html (через регулярку — обход ошибки)
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(DIST_DIR, 'index.html'));
+});
+
+// ---------- Запуск ----------
+app.listen(PORT, () => {
+  console.log(`✅ Продакшен-сервер запущен: http://localhost:${PORT}`);
+});
